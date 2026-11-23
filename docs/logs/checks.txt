@@ -1,0 +1,17 @@
+Local quality checks - 23 November 2026
+
+ruff check .
+All checks passed!
+
+ruff format --check .
+49 files already formatted
+
+mypy app
+Success: no issues found in 33 source files
+
+pytest
+111 passed, 1 warning in 7.04s
+Coverage: 97.26% (fail-under=90)
+
+Note: remaining warning is a Starlette/TestClient deprecation notice from the test
+client dependency. It does not affect the API or test results.

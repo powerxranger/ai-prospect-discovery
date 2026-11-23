@@ -1,0 +1,11 @@
+{
+  "status": "pending_live_run",
+  "note": "This file will be replaced with sanitized real responses from the five required queries after fresh GEMINI_API_KEY and TAVILY_API_KEY are added locally. No fabricated prospects are included.",
+  "required_queries": [
+    "Football lovers in Washington DC in USA",
+    "Digital marketing agency owners in New York USA",
+    "Startup founders in London UK",
+    "Cricket lovers in Ahmedabad India",
+    "Restaurant owners in Dubai UAE"
+  ]
+}

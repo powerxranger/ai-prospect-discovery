@@ -1,0 +1,5 @@
+PENDING LIVE RUN
+
+Add fresh GEMINI_API_KEY and TAVILY_API_KEY to .env locally, then run the five
+required queries. The sanitized log will be saved here with request queries,
+timings, counts, and redacted errors only. No API keys will be written to this file.
