@@ -116,6 +116,12 @@ class DiscoveryResponse(StrictModel):
         return self
 
 
+class ValidationResponse(StrictModel):
+    query: str
+    intent: QueryIntent
+    queries: list[str]
+
+
 class Candidate(StrictModel):
     name: str = ""
     platform: PlatformName

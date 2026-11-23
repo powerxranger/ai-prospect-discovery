@@ -1,0 +1,39 @@
+@baseUrl = http://127.0.0.1:4000
+@query = Football lovers in Washington DC in USA
+
+### Health
+GET {{baseUrl}}/health
+Accept: application/json
+
+### Readiness (no secret values)
+GET {{baseUrl}}/platforms
+Accept: application/json
+
+### Swagger UI
+GET {{baseUrl}}/docs
+
+### Validate intent and planned queries (no web search)
+POST {{baseUrl}}/validate
+Content-Type: application/json
+X-Request-ID: validate-example
+
+{
+  "query": "{{query}}"
+}
+
+### Required prospect discovery request
+POST {{baseUrl}}/prospect-discovery
+Content-Type: application/json
+X-Request-ID: discovery-example
+
+{
+  "query": "{{query}}"
+}
+
+### Invalid request (must return 422)
+POST {{baseUrl}}/prospect-discovery
+Content-Type: application/json
+
+{
+  "query": "ab"
+}

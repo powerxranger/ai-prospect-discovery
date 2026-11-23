@@ -2,10 +2,16 @@
 
 FastAPI service that turns a natural-language prospect query into a deduplicated list of **real, publicly indexed individual or business profiles** across Google, LinkedIn, X, YouTube, Instagram, WhatsApp, Facebook, Email, and Threads.
 
+[![ci](https://github.com/powerxranger/ai-prospect-discovery/actions/workflows/ci.yml/badge.svg)](https://github.com/powerxranger/ai-prospect-discovery/actions/workflows/ci.yml)
+![tests](https://img.shields.io/badge/tests-127%20passing-success)
+![coverage](https://img.shields.io/badge/coverage-96.83%25-success)
+![python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
+![license](https://img.shields.io/badge/license-MIT-blue)
+
 > **Live demo:** _add Render URL after deployment_  
 > **Swagger `/docs`:** _add `<render-url>/docs` after deployment_  
 > **Public repository:** <https://github.com/powerxranger/ai-prospect-discovery>  
-> **Docs checked:** 23 November 2026
+> **Docs checked:** 24 November 2026
 
 ---
 
@@ -109,16 +115,48 @@ curl -X POST "http://127.0.0.1:4000/prospect-discovery" `
   -d '{\"query\":\"Football lovers in Washington DC in USA\"}'
 ```
 
+### Other endpoints
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /health` | Liveness check |
+| `GET /platforms` | Readiness report: provider/model, key presence, platform adapters; never prints secrets |
+| `POST /validate` | Parses intent and lists planned queries without web search |
+| `GET /docs`, `/redoc`, `/openapi.json` | Interactive API documentation |
+| Every response | Echoes `X-Request-ID`; supply your own header or the app generates one |
+
+### Ready-to-run requests
+
+Use [`requests.http`](requests.http) in VS Code REST Client or import [`docs/postman_collection.json`](docs/postman_collection.json) into Postman.
+
+### Helper scripts
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.check_env
+.\.venv\Scripts\python.exe -m scripts.smoke_test
+.\.venv\Scripts\python.exe -m scripts.smoke_test --live
+```
+
+`check_env` prints only key presence, never key values. `smoke_test` checks local routes; `--live` also calls `/validate` and `/prospect-discovery`.
+
+### Docker (optional)
+
+```powershell
+docker compose up --build
+```
+
+The image runs as a non-root user and does not copy `.env` into the build context.
+
 ### Quality checks
 
 ```powershell
 .\.venv\Scripts\python.exe -m ruff check .
 .\.venv\Scripts\python.exe -m ruff format --check .
-.\.venv\Scripts\python.exe -m mypy app
+.\.venv\Scripts\python.exe -m mypy app scripts
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Current result: **123 tests passed**, **96.83% coverage**, Ruff clean, MyPy clean.
+Current result: **127 tests passed**, **96.83% coverage**, Ruff clean, MyPy clean. CI runs the same checks on Python 3.11 and 3.12.
 
 ---
 
@@ -189,7 +227,7 @@ Sources: official Gemini rate limits/pricing and Groq/OpenAI/Anthropic pricing p
 | OpenAI `gpt-4.1-mini` | No comparable permanent free tier | `$0.40` / `$1.60` (batch rates lower) | JSON mode | Reliable paid fallback |
 | Claude Haiku 4.5 | No comparable permanent free tier | `$1.00` / `$5.00` | Prompted JSON | Higher cost, not needed |
 
-Measured locally: all 123 tests pass with mocked providers; live provider quality is recorded in `docs/logs/live-run.log`. Free-tier allowances are provider estimates from public docs and can change.
+Measured locally: all 127 tests pass with mocked providers; live provider quality is recorded in `docs/logs/live-run.log`. Free-tier allowances are provider estimates from public docs and can change.
 
 ### Final recommendation
 
@@ -237,8 +275,9 @@ Add `GEMINI_API_KEY` and `TAVILY_API_KEY` as **secret environment variables** in
 After deployment, verify:
 
 1. `GET /health` returns `{"status":"ok"}`
-2. `GET /docs` opens Swagger UI
-3. `POST /prospect-discovery` returns the exact schema
+2. `GET /platforms` shows `tavily_configured: true` and all nine adapters
+3. `GET /docs` opens Swagger UI
+4. `POST /prospect-discovery` returns the exact schema
 
 ---
 
@@ -261,3 +300,90 @@ Final evidence checks:
 - Platforms observed: Email, Google, Instagram, LinkedIn, Threads, WhatsApp, X.
 
 _Add live Render URL, `/docs` URL, and screenshots after deployment._
+
+---
+
+## 12. Choices made on purpose
+
+1. **Discovery is server-side.** The request body stays exactly `{"query": ...}`; extra fields are rejected.
+2. **Google is discovery-only.** Generic `google.com/search` URLs are never returned as prospects.
+3. **LLM output is never trusted blindly.** Names and locations from the LLM must be grounded in observed search text.
+4. **Scraped pages are untrusted input.** They are wrapped in `<untrusted_search_data>` and cannot issue instructions to the model.
+5. **Failures degrade gracefully.** If Gemini returns `503` or invalid JSON, a deterministic parser/search path still serves the request.
+6. **Deduction is conservative.** Two people merge only on exact URL, or matching name plus shared handle/email; similar names are not merged.
+7. **Contact data is public-only.** Emails, phone numbers and WhatsApp links come from published page text or `mailto:`/`wa.me` links.
+
+---
+
+## 13. Errors you will see
+
+| Code | Meaning |
+| --- | --- |
+| `INVALID_REQUEST` | `422`; malformed body, extra field, or query outside 3–300 characters |
+| `SEARCH_UNAVAILABLE` | `503`; Tavily missing or unavailable |
+| `LLM_CONFIGURATION_ERROR` | Provider/key mismatch; the app falls back where possible |
+| `INTERNAL_ERROR` | `500`; unexpected server error without internal details |
+
+Validation and error responses use a small `success/error` envelope. Successful `POST /prospect-discovery` responses keep the exact required keys only.
+
+---
+
+## 14. Secrets
+
+- Credentials come from environment variables only; `.env` is gitignored from the first commit.
+- `SecretRedactionFilter` scrubs configured secrets from logs.
+- `scripts.check_env` reports key presence only, never values.
+- `render.yaml` uses `sync: false` for both required keys.
+- `.pre-commit-config.yaml` includes `gitleaks` and `detect-private-key`.
+- No keys appear in README, requests, Postman collection, screenshots, sample responses or logs.
+
+---
+
+## 15. What I left out
+
+- **No persistence.** The TTL cache is in-process; restarts clear it.
+- **No payment or database layer.** This is a stateless practical API.
+- **No authentication on the API.** It is intended as an open practical demo; add auth before production multi-tenant use.
+- **No private-platform scraping.** Login-only LinkedIn/Instagram data is intentionally not accessed.
+- **No guaranteed platform mix.** All nine adapters run, but public indexing and rate limits decide which links appear in each response.
+- **No browser screenshot generation in CI.** Screenshots are added manually after deployment to avoid committing secrets or private browser state.
+
+---
+
+## 16. Layout
+
+```text
+app/
+├── main.py                  # FastAPI app, middleware, routes, error handlers
+├── config.py                # env-backed typed settings
+├── errors.py                # error taxonomy and HTTP mapping
+├── logging_config.py        # logs with secret redaction
+├── schemas.py               # strict Pydantic contracts
+├── platforms/               # nine platform adapters + registry
+├── services/                # intent, search, relevance, contacts, dedup, cache
+└── utils/                   # validators, normalizers, prompts
+
+scripts/
+├── check_env.py             # key-presence readiness report
+├── smoke_test.py            # local route smoke test
+└── run_live_queries.py      # five-query evidence generator
+
+docs/
+├── postman_collection.json
+├── sample_responses/live-run.json
+├── logs/live-run.log
+├── logs/checks.txt
+└── screenshots/
+
+requests.http
+render.yaml
+Dockerfile
+docker-compose.yml
+.pre-commit-config.yaml
+```
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).

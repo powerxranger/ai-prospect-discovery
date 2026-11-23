@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "AI Prospect Discovery API",
+    "description": "Local requests for the Dxora Python practical. No secrets are stored in this collection.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://127.0.0.1:4000" },
+    { "key": "query", "value": "Football lovers in Washington DC in USA" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+      }
+    },
+    {
+      "name": "Platforms readiness",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/platforms", "host": ["{{baseUrl}}"], "path": ["platforms"] }
+      }
+    },
+    {
+      "name": "Validate query",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Request-ID", "value": "postman-validate" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"{{query}}\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/validate", "host": ["{{baseUrl}}"], "path": ["validate"] }
+      }
+    },
+    {
+      "name": "Prospect discovery",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "X-Request-ID", "value": "postman-discovery" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"{{query}}\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/prospect-discovery",
+          "host": ["{{baseUrl}}"],
+          "path": ["prospect-discovery"]
+        }
+      }
+    },
+    {
+      "name": "Invalid request",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"query\": \"ab\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/prospect-discovery",
+          "host": ["{{baseUrl}}"],
+          "path": ["prospect-discovery"]
+        }
+      }
+    }
+  ]
+}

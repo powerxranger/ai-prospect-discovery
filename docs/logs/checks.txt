@@ -1,20 +1,42 @@
-Local quality checks - 23 November 2026
+Local quality checks - 24 November 2026
 
 ruff check .
 All checks passed!
 
 ruff format --check .
-52 files already formatted
+54 files already formatted
 
-mypy app
-Success: no issues found in 33 source files
+mypy app scripts
+Success: no issues found in 37 source files
 
 pytest
-123 passed, 1 warning in 7.93s
+127 passed, 1 warning in 16.13s
 Coverage: 96.83% (fail-under=90)
 
-Note: remaining warning is a Starlette/TestClient deprecation notice from the test
-client dependency. It does not affect the API or test results.
+scripts.check_env
+env file found: True
+Gemini key: set
+Tavily key: set
+Active LLM key: set
+Discovery platforms: 9
+Ready.
+
+scripts.smoke_test
+GET /health -> 200
+GET /platforms -> 200
+GET /docs -> 200
+GET /openapi.json -> 200
+Smoke test passed.
+
+Real uvicorn check on http://127.0.0.1:4000
+/health -> 200
+/platforms -> 200
+/docs -> 200
+/openapi.json -> 200
+X-Request-ID present on every response.
+
+Note: remaining pytest warning is a Starlette/TestClient deprecation notice from
+the test client dependency. It does not affect the API or test results.
 
 Live evidence verification - 23 November 2026
 

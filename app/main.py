@@ -1,17 +1,19 @@
 from __future__ import annotations
 
 import logging
-from collections.abc import AsyncIterator
+import uuid
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, Request
+from fastapi import Depends, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, RedirectResponse
 
 from .config import get_settings
 from .errors import ProspectDiscoveryError
 from .logging_config import configure_logging
-from .schemas import DiscoveryRequest, DiscoveryResponse
+from .platforms.registry import get_adapters
+from .schemas import DiscoveryRequest, DiscoveryResponse, ValidationResponse
 from .services.prospect_service import ProspectService
 
 logger = logging.getLogger(__name__)
@@ -39,6 +41,17 @@ app = FastAPI(
     description="Discover and consolidate public prospect profiles from a natural-language query.",
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def request_id_middleware(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    request_id = request.headers.get("X-Request-ID") or uuid.uuid4().hex
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    return response
 
 
 async def get_prospect_service() -> ProspectService:
@@ -101,6 +114,33 @@ async def root() -> RedirectResponse:
 @app.get("/health", tags=["health"])
 async def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/platforms", tags=["health"])
+async def platforms() -> dict[str, object]:
+    """Readiness report. It never exposes secret values."""
+    settings = get_settings()
+    return {
+        "llm_provider": settings.llm_provider,
+        "llm_model": settings.llm_model,
+        "llm_configured": settings.active_llm_key() is not None,
+        "tavily_configured": settings.tavily_api_key is not None,
+        "platforms": [adapter.name for adapter in get_adapters()],
+    }
+
+
+@app.post("/validate", response_model=ValidationResponse, tags=["validation"])
+async def validate_query(
+    payload: DiscoveryRequest,
+    service: ProspectService = Depends(get_prospect_service),
+) -> ValidationResponse:
+    """Parse intent and show planned queries without searching the web."""
+    intent = await service.query.understand(payload.query)
+    return ValidationResponse(
+        query=payload.query,
+        intent=intent,
+        queries=service.extractor.build_queries(intent),
+    )
 
 
 @app.post(

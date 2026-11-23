@@ -4,7 +4,8 @@ from fastapi.testclient import TestClient
 
 from app.errors import SearchUnavailableError
 from app.main import app, get_prospect_service
-from app.schemas import DiscoveryResponse, Prospect, SocialLink
+from app.platforms.registry import get_adapters
+from app.schemas import DiscoveryResponse, Prospect, QueryIntent, SocialLink
 
 
 class FakeProspectService:
@@ -82,3 +83,62 @@ def test_search_failure_is_structured() -> None:
 def test_health_endpoint() -> None:
     with TestClient(app) as client:
         assert client.get("/health").json() == {"status": "ok"}
+
+
+def test_request_id_is_echoed_and_generated() -> None:
+    with TestClient(app) as client:
+        echoed = client.get("/health", headers={"X-Request-ID": "test-request-123"})
+        generated = client.get("/health")
+    assert echoed.headers["X-Request-ID"] == "test-request-123"
+    assert generated.headers["X-Request-ID"]
+
+
+def test_docs_and_openapi_expose_all_routes() -> None:
+    with TestClient(app) as client:
+        assert client.get("/docs").status_code == 200
+        schema = client.get("/openapi.json").json()
+    assert {"/health", "/platforms", "/validate", "/prospect-discovery"} <= set(schema["paths"])
+
+
+def test_platforms_report_has_no_secrets() -> None:
+    with TestClient(app) as client:
+        body = client.get("/platforms").json()
+    assert set(body) == {
+        "llm_provider",
+        "llm_model",
+        "llm_configured",
+        "tavily_configured",
+        "platforms",
+    }
+    assert body["platforms"] == [adapter.name for adapter in get_adapters()]
+    assert all(not str(value).startswith(("AIza", "tvly-", "gsk_")) for value in body.values())
+
+
+class FakeQueryService:
+    async def understand(self, query: str) -> QueryIntent:
+        return QueryIntent(interest="Football", audience="Football lovers", city="Washington DC")
+
+
+class FakeExtractor:
+    @staticmethod
+    def build_queries(intent: QueryIntent) -> list[str]:
+        return ["site:linkedin.com football washington dc"]
+
+
+class FakeValidationService:
+    query = FakeQueryService()
+    extractor = FakeExtractor()
+
+
+def test_validate_endpoint_shows_plan_without_searching() -> None:
+    app.dependency_overrides[get_prospect_service] = lambda: FakeValidationService()
+    try:
+        with TestClient(app) as client:
+            response = client.post("/validate", json={"query": "Football lovers in Washington DC"})
+        assert response.status_code == 200
+        body = response.json()
+        assert body["query"] == "Football lovers in Washington DC"
+        assert body["intent"]["interest"] == "Football"
+        assert body["queries"] == ["site:linkedin.com football washington dc"]
+    finally:
+        app.dependency_overrides.clear()

@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.venv/
+.git/
+.github/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+docs/
+tests/
+scripts/
+requests.http
