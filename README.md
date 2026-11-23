@@ -4,7 +4,7 @@ FastAPI service that turns a natural-language prospect query into a deduplicated
 
 > **Live demo:** _add Render URL after deployment_  
 > **Swagger `/docs`:** _add `<render-url>/docs` after deployment_  
-> **Public repository:** _add GitHub URL after push_  
+> **Public repository:** <https://github.com/powerxranger/ai-prospect-discovery>  
 > **Docs checked:** 23 November 2026
 
 ---
