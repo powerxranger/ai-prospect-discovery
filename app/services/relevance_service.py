@@ -27,6 +27,103 @@ STOP_WORDS = {
     "with",
 }
 
+GENERIC_PROFILE_TERMS = {
+    "about",
+    "accelerator",
+    "agency",
+    "all",
+    "association",
+    "best",
+    "blog",
+    "box",
+    "caterer",
+    "channel",
+    "club",
+    "collective",
+    "community",
+    "content",
+    "contact",
+    "creative",
+    "directory",
+    "digital",
+    "events",
+    "experts",
+    "fans",
+    "find",
+    "fintech",
+    "followers",
+    "forum",
+    "founder",
+    "founders",
+    "grounds",
+    "group",
+    "guide",
+    "home",
+    "incubator",
+    "info",
+    "investments",
+    "labs",
+    "leaders",
+    "list",
+    "login",
+    "love",
+    "luxury",
+    "magazine",
+    "management",
+    "marketing",
+    "match",
+    "matches",
+    "me",
+    "media",
+    "mentor",
+    "mentorship",
+    "mind",
+    "network",
+    "news",
+    "notice",
+    "number",
+    "owners",
+    "platform",
+    "privacy",
+    "pro",
+    "profile",
+    "profiles",
+    "quality",
+    "register",
+    "reviews",
+    "ranking",
+    "rankings",
+    "search",
+    "services",
+    "shop",
+    "show",
+    "social",
+    "software",
+    "sports",
+    "stadium",
+    "startup",
+    "startups",
+    "studio",
+    "studios",
+    "subscribers",
+    "terms",
+    "tips",
+    "time",
+    "top",
+    "updates",
+    "vlog",
+    "venture",
+    "ventures",
+    "video",
+    "videos",
+    "watch",
+    "website",
+    "llc",
+    "ltd",
+    "inc",
+    "co",
+}
+
 
 class LLMValidationCandidate(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -105,6 +202,41 @@ def intents_location_expected(intent: QueryIntent) -> bool:
     return bool(intent.city or intent.state or intent.country)
 
 
+def _location_terms(intent: QueryIntent) -> set[str]:
+    terms = _terms(intent.city) | _terms(intent.state) | _terms(intent.country)
+    for variant in intent.location_variants:
+        terms |= _terms(variant)
+    city = normalize_name(intent.city or "")
+    if city in {"washington dc", "washington d c"}:
+        terms |= {"dc", "d c"}
+    if city == "new york":
+        terms.add("nyc")
+    return terms
+
+
+def _is_generic_or_echo_name(name: str, intent: QueryIntent) -> bool:
+    """Reject SEO-style labels and names that merely echo the query."""
+    if not plausible_name(name):
+        return True
+    words = normalize_name(name).split()
+    if not words:
+        return True
+
+    topic_terms = _terms(intent.interest) | _terms(intent.audience)
+    location_terms = _location_terms(intent)
+    removable = topic_terms | location_terms | STOP_WORDS | GENERIC_PROFILE_TERMS
+    distinctive = [word for word in words if word not in removable and not word.isdigit()]
+    if not distinctive:
+        return True
+
+    name_terms = set(words)
+    if topic_terms and topic_terms <= name_terms:
+        primary_location = _terms(intent.city) | _terms(intent.country)
+        if primary_location and primary_location <= name_terms:
+            return True
+    return False
+
+
 class RelevanceService:
     def __init__(self, llm: LLMService) -> None:
         self.llm = llm
@@ -134,6 +266,8 @@ class RelevanceService:
             if not any(
                 term in observed for term in _terms(intent.interest) | _terms(intent.audience)
             ):
+                continue
+            if _is_generic_or_echo_name(candidate.name, intent):
                 continue
             results.append(candidate)
         return results

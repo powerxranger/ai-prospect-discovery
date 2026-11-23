@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from app.config import Settings
+from app.platforms.email import EmailAdapter
 from app.schemas import QueryIntent
 from app.services.profile_extractor import ProfileExtractor
 from app.services.search_service import SearchResult
@@ -82,6 +83,26 @@ def test_extractor_deduplicates_same_url(settings: Settings, intent: QueryIntent
     result = _result("https://www.linkedin.com/in/john-smith/")
     candidates = extractor.build_candidates([result, result], intent)
     assert len(candidates) == 1
+
+
+def test_email_adapter_rejects_social_video_and_post_urls() -> None:
+    adapter = EmailAdapter()
+    assert (
+        adapter.accepts(
+            SearchResult(title="Contact email", url="https://www.youtube.com/watch?v=abc")
+        )
+        is False
+    )
+    assert (
+        adapter.accepts(
+            SearchResult(title="Contact email", url="https://www.instagram.com/p/ABC123/")
+        )
+        is False
+    )
+    assert (
+        adapter.accepts(SearchResult(title="Contact", url="https://johnsmith.example.com/contact"))
+        is True
+    )
 
 
 def test_extractor_skips_results_without_a_name(settings: Settings, intent: QueryIntent) -> None:

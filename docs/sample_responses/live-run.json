@@ -1,11 +1,556 @@
 {
-  "status": "pending_live_run",
-  "note": "This file will be replaced with sanitized real responses from the five required queries after fresh GEMINI_API_KEY and TAVILY_API_KEY are added locally. No fabricated prospects are included.",
-  "required_queries": [
+  "generated_at": "2026-11-23T18:07:18+00:00",
+  "source": "local TestClient against app.main:app using fresh .env keys",
+  "queries": [
     "Football lovers in Washington DC in USA",
     "Digital marketing agency owners in New York USA",
     "Startup founders in London UK",
     "Cricket lovers in Ahmedabad India",
     "Restaurant owners in Dubai UAE"
+  ],
+  "responses": [
+    {
+      "success": true,
+      "query": "Football lovers in Washington DC in USA",
+      "total_prospects": 5,
+      "prospects": [
+        {
+          "name": "James Galbally",
+          "location": "Washington DC, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/james-galbally-815038380"
+            }
+          ]
+        },
+        {
+          "name": "John Booty",
+          "location": "Washington DC, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/john-booty-814386a"
+            }
+          ]
+        },
+        {
+          "name": "Jordan Stuart",
+          "location": "Washington DC, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/nextmovejordan"
+            }
+          ]
+        },
+        {
+          "name": "Madison Sturgell",
+          "location": "Washington DC, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/madison-sturgell-1b914a181"
+            }
+          ]
+        },
+        {
+          "name": "WASHINGTON DC SCANDAL",
+          "location": "Washington DC, USA",
+          "social_link": [
+            {
+              "platform": "Instagram",
+              "link": "https://www.instagram.com/scandalultimate?hl=en"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "success": true,
+      "query": "Digital marketing agency owners in New York USA",
+      "total_prospects": 11,
+      "prospects": [
+        {
+          "name": "Amsive",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/amsiveagency"
+            }
+          ]
+        },
+        {
+          "name": "Brian LeDonne",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/brianledonne"
+            }
+          ]
+        },
+        {
+          "name": "Brittany Bright",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@itsbrittanybright"
+            }
+          ]
+        },
+        {
+          "name": "Eric Lituchy",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/ericlituchy"
+            }
+          ]
+        },
+        {
+          "name": "Gene A",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/evge-ny"
+            }
+          ]
+        },
+        {
+          "name": "KEVIN POIRIER",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/kevin-poirier-66661226"
+            }
+          ]
+        },
+        {
+          "name": "Robin Colner",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/RobinColner"
+            }
+          ]
+        },
+        {
+          "name": "Sue Bookhout",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://www.linkedin.com/in/suebookhout"
+            }
+          ]
+        },
+        {
+          "name": "THE SETTERS AGENCY",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "Instagram",
+              "link": "https://www.instagram.com/thesetters.agency"
+            }
+          ]
+        },
+        {
+          "name": "Theresa Park",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@career_panda"
+            }
+          ]
+        },
+        {
+          "name": "Vector Media Group",
+          "location": "New York, USA",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/VectorNYC"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "success": true,
+      "query": "Startup founders in London UK",
+      "total_prospects": 14,
+      "prospects": [
+        {
+          "name": "Alex Jones",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://uk.linkedin.com/in/alex-jones-0b1b09107"
+            }
+          ]
+        },
+        {
+          "name": "Association for Competitive Technology",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@actmembers?hl=af"
+            }
+          ]
+        },
+        {
+          "name": "Founder Groups London",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Google",
+              "link": "https://www.meetup.com/lp/career-and-business/founder-groups-london"
+            }
+          ]
+        },
+        {
+          "name": "Hash Syed",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@hashsyed_?hl=zh-cn"
+            }
+          ]
+        },
+        {
+          "name": "John-Pierre Clark",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://uk.linkedin.com/in/johnpierreclark"
+            }
+          ]
+        },
+        {
+          "name": "Maxx Turing",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/MaxxTuring"
+            },
+            {
+              "platform": "WhatsApp",
+              "link": "https://wa.me/447201203156"
+            }
+          ]
+        },
+        {
+          "name": "Mike Butcher",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@mikebutcher"
+            }
+          ]
+        },
+        {
+          "name": "Pathfounders",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/Pathfounders"
+            }
+          ]
+        },
+        {
+          "name": "Rare Founders",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Instagram",
+              "link": "https://www.instagram.com/rarefounders"
+            }
+          ]
+        },
+        {
+          "name": "Richard Cristina",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://uk.linkedin.com/in/richard-cristina-startup"
+            }
+          ]
+        },
+        {
+          "name": "Tally Bevis",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@thenashvilleblondie"
+            }
+          ]
+        },
+        {
+          "name": "Vasily Alekseenko",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://uk.linkedin.com/in/alekseenkovv"
+            }
+          ]
+        },
+        {
+          "name": "Vasily Alekseenko",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/rarefounders"
+            }
+          ]
+        },
+        {
+          "name": "Virgin StartUp",
+          "location": "London, UK",
+          "social_link": [
+            {
+              "platform": "Instagram",
+              "link": "https://www.instagram.com/virginstartup"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "success": true,
+      "query": "Cricket lovers in Ahmedabad India",
+      "total_prospects": 10,
+      "prospects": [
+        {
+          "name": "Anunay Singh",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@anu_naysingh"
+            }
+          ]
+        },
+        {
+          "name": "Cricket Addicts",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@cricketaddictsofficial"
+            }
+          ]
+        },
+        {
+          "name": "Dar Taju",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@dar.taju"
+            }
+          ]
+        },
+        {
+          "name": "Dipak Kumar Mandal",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://in.linkedin.com/in/dipak-kumar-mandal-9285b2329"
+            }
+          ]
+        },
+        {
+          "name": "Harshil Joshi",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://in.linkedin.com/in/harshil-joshi-37376a145"
+            }
+          ]
+        },
+        {
+          "name": "heer shukla",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://in.linkedin.com/in/heer-shukla-90a06478"
+            }
+          ]
+        },
+        {
+          "name": "INDIAN CRICKET LOVERS",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://in.linkedin.com/in/indian-cricket-lovers-41481b296"
+            }
+          ]
+        },
+        {
+          "name": "Irfan Dar",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://in.linkedin.com/in/irfan-dar-356160283"
+            }
+          ]
+        },
+        {
+          "name": "Neeil Ojha",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@superneeil"
+            }
+          ]
+        },
+        {
+          "name": "THE CRICKET CLUB OF INDIA LIMITED",
+          "location": "Ahmedabad, India",
+          "social_link": [
+            {
+              "platform": "Email",
+              "link": "https://tracxn.com/d/legal-entities/india/the-cricket-club-of-india-limited/__LEnTQkDRYVc4PK0bbGJS4NhCzc0jFzya8EhcKZTOYX0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "success": true,
+      "query": "Restaurant owners in Dubai UAE",
+      "total_prospects": 10,
+      "prospects": [
+        {
+          "name": "Adwait Phatak",
+          "location": "UAE",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/adwait-phatak-03340643"
+            }
+          ]
+        },
+        {
+          "name": "Afran Khan",
+          "location": "Abu Dhabi, Abu Dhabi Emirate, United Arab Emirates",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/afran-khan-50828736a"
+            }
+          ]
+        },
+        {
+          "name": "Aisha Shakoor",
+          "location": "Dubai, United Arab Emirates",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/aisha-shakoor-924777243"
+            }
+          ]
+        },
+        {
+          "name": "Alexandros Pavlopoulos",
+          "location": "Dubai",
+          "social_link": [
+            {
+              "platform": "WhatsApp",
+              "link": "https://wa.me/971567086518"
+            },
+            {
+              "platform": "Threads",
+              "link": "https://www.threads.net/@chefsperxos"
+            }
+          ]
+        },
+        {
+          "name": "Caterer Middle East",
+          "location": "Dubai, UAE",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/CatererME"
+            }
+          ]
+        },
+        {
+          "name": "FooDiva",
+          "location": "Dubai, UAE",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/FooDivaWorld"
+            }
+          ]
+        },
+        {
+          "name": "Joey Ghazal",
+          "location": "Dubai, United Arab Emirates",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/joeyghazal"
+            }
+          ]
+        },
+        {
+          "name": "Khalid Abdulghaffar Hussain",
+          "location": "Dubai, United Arab Emirates",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/khalid-abdulghaffar-hussain-284833b6"
+            }
+          ]
+        },
+        {
+          "name": "Shahbaz Shahid Khan",
+          "location": "Dubai, United Arab Emirates",
+          "social_link": [
+            {
+              "platform": "LinkedIn",
+              "link": "https://ae.linkedin.com/in/shahbaz-shahid-khan-4b10a6a0"
+            }
+          ]
+        },
+        {
+          "name": "TableCheck",
+          "location": "Dubai, UAE",
+          "social_link": [
+            {
+              "platform": "X",
+              "link": "https://x.com/tablecheck"
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

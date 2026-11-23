@@ -30,6 +30,33 @@ GENERIC_NAME_TOKENS = {
     "x",
     "youtube",
 }
+NON_NAME_TERMS = {
+    "all",
+    "call",
+    "find",
+    "followers",
+    "following",
+    "investments",
+    "likes",
+    "login",
+    "me",
+    "notice",
+    "number",
+    "owners",
+    "privacy",
+    "register",
+    "registration",
+    "results",
+    "runs",
+    "search",
+    "show",
+    "subscribers",
+    "time",
+    "update",
+    "updates",
+    "vlog",
+    "views",
+}
 SPLIT_RE = re.compile(
     r"\s*[|\u00b7\u2022\u2122]\s*|\s+[-\u2013\u2014]\s+|\s+on\s+LinkedIn\b",
     re.IGNORECASE,
@@ -56,10 +83,14 @@ def plausible_name(value: str) -> bool:
     candidate = sanitize_text(value, 120)
     if not candidate or len(candidate) > 90:
         return False
+    if not candidate[0].isalpha():
+        return False
     words = normalize_name(candidate).split()
     if not 1 <= len(words) <= 6:
         return False
-    if any(word in GENERIC_NAME_TOKENS for word in words):
+    if any(word in GENERIC_NAME_TOKENS or word in NON_NAME_TERMS for word in words):
+        return False
+    if words[0][0].isdigit():
         return False
     letters = sum(char.isalpha() for char in candidate)
     return letters >= 2 and not candidate.lower().startswith("http")

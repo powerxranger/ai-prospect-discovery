@@ -1,5 +1,11 @@
-PENDING LIVE RUN
+Live discovery run started at 2026-11-23T18:05:56+00:00
+LLM provider: gemini
+LLM model: gemini-3.5-flash-lite
+API keys are intentionally not logged.
 
-Add fresh GEMINI_API_KEY and TAVILY_API_KEY to .env locally, then run the five
-required queries. The sanitized log will be saved here with request queries,
-timings, counts, and redacted errors only. No API keys will be written to this file.
+GET /health -> 200 {'status': 'ok'}
+[1/5] Football lovers in Washington DC in USA | status=200 | duration=8.64s | prospects=5 | platforms={'Instagram': 1, 'LinkedIn': 4}
+[2/5] Digital marketing agency owners in New York USA | status=200 | duration=12.24s | prospects=11 | platforms={'Instagram': 1, 'LinkedIn': 5, 'Threads': 2, 'X': 3}
+[3/5] Startup founders in London UK | status=200 | duration=17.05s | prospects=14 | platforms={'Google': 1, 'Instagram': 2, 'LinkedIn': 4, 'Threads': 4, 'WhatsApp': 1, 'X': 3}
+[4/5] Cricket lovers in Ahmedabad India | status=200 | duration=16.53s | prospects=10 | platforms={'Email': 1, 'LinkedIn': 5, 'Threads': 4}
+[5/5] Restaurant owners in Dubai UAE | status=200 | duration=18.13s | prospects=10 | platforms={'LinkedIn': 6, 'Threads': 1, 'WhatsApp': 1, 'X': 3}

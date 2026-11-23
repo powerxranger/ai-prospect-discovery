@@ -71,3 +71,7 @@ def test_phone_normalization() -> None:
 
 def test_sanitize_text_removes_control_characters() -> None:
     assert sanitize_text("hello\x00\nworld") == "hello world"
+
+
+def test_sanitize_text_removes_invisible_format_characters() -> None:
+    assert sanitize_text("Afran\u200f Khan\u200e") == "Afran Khan"

@@ -139,6 +139,20 @@ def test_email_phone_and_host_helpers_edges(monkeypatch: pytest.MonkeyPatch) -> 
     assert host_matches("bad", {"linkedin.com"}) is False
 
 
+def test_plausible_name_rejects_non_name_labels() -> None:
+    for value in (
+        "1K+ followers",
+        "21 Runs for Power Panthers Ahmedabad",
+        "Privacy Notice",
+        "To Register Call: 93161-03960",
+        "Update: Cricket Lovers in Ahmedabad",
+        "Login",
+        "Search Results",
+    ):
+        assert plausible_name(value) is False
+    assert plausible_name("The Setters Agency") is True
+
+
 def test_normalizer_edge_cases() -> None:
     assert plausible_name("") is False
     assert plausible_name(" ".join(["John"] * 7)) is False

@@ -118,7 +118,7 @@ curl -X POST "http://127.0.0.1:4000/prospect-discovery" `
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Current result: **111 tests passed**, **97% coverage**, Ruff clean, MyPy clean.
+Current result: **123 tests passed**, **96.83% coverage**, Ruff clean, MyPy clean.
 
 ---
 
@@ -132,7 +132,7 @@ The service was exercised with these five dynamic queries:
 4. `Cricket lovers in Ahmedabad India`
 5. `Restaurant owners in Dubai UAE`
 
-Sanitized live responses and logs are stored under `docs/sample_responses/` and `docs/logs/`. No keys appear in those files.
+Sanitized live responses and logs are stored under `docs/sample_responses/` and `docs/logs/`. Final live run: **5/5 requests succeeded**, **50 prospects**, **52 links**, counts `[5, 11, 14, 10, 10]`. No API keys or generic search/video/post links appear in those files.
 
 ---
 
@@ -189,7 +189,7 @@ Sources: official Gemini rate limits/pricing and Groq/OpenAI/Anthropic pricing p
 | OpenAI `gpt-4.1-mini` | No comparable permanent free tier | `$0.40` / `$1.60` (batch rates lower) | JSON mode | Reliable paid fallback |
 | Claude Haiku 4.5 | No comparable permanent free tier | `$1.00` / `$5.00` | Prompted JSON | Higher cost, not needed |
 
-Measured locally: all 111 tests pass with mocked providers; live provider quality is recorded in `docs/logs/live-run.log`. Free-tier allowances are provider estimates from public docs and can change.
+Measured locally: all 123 tests pass with mocked providers; live provider quality is recorded in `docs/logs/live-run.log`. Free-tier allowances are provider estimates from public docs and can change.
 
 ### Final recommendation
 
@@ -251,5 +251,13 @@ After deployment, verify:
 | Screenshots | `docs/screenshots/` |
 | CI checks | `.github/workflows/ci.yml` |
 | Test summary | `docs/logs/checks.txt` |
+
+Final evidence checks:
+
+- Exact response keys verified for all five responses: `success`, `query`, `total_prospects`, `prospects`.
+- Exact prospect keys verified: `name`, `location`, `social_link`; exact link keys: `platform`, `link`.
+- No `AIza`, `tvly-`, `sk-`, or `gsk_` key patterns in response/log files.
+- No generic Google/LinkedIn/X/Facebook search URLs, YouTube watch URLs, Instagram post URLs, or Threads login URLs.
+- Platforms observed: Email, Google, Instagram, LinkedIn, Threads, WhatsApp, X.
 
 _Add live Render URL, `/docs` URL, and screenshots after deployment._

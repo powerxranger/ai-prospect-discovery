@@ -10,6 +10,7 @@ import phonenumbers
 from email_validator import EmailNotValidError, validate_email
 
 CONTROL_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+FORMAT_CHARS = re.compile(r"[\u200b-\u200f\u2060\ufeff]")
 EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.IGNORECASE)
 PHONE_RE = re.compile(r"(?:\+?\d[\d\s().-]{7,}\d)")
 BLOCKED_NETWORKS = tuple(
@@ -47,8 +48,9 @@ PLATFORM_EMAIL_DOMAINS = {
 
 
 def sanitize_text(value: str, max_chars: int = 4000) -> str:
-    """Remove control characters and cap length before using text as LLM data."""
-    cleaned = CONTROL_CHARS.sub(" ", value or "")
+    """Remove control/invisible format characters and cap length before using text."""
+    cleaned = FORMAT_CHARS.sub("", value or "")
+    cleaned = CONTROL_CHARS.sub(" ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     return cleaned[:max_chars]
 

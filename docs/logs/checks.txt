@@ -4,14 +4,25 @@ ruff check .
 All checks passed!
 
 ruff format --check .
-49 files already formatted
+52 files already formatted
 
 mypy app
 Success: no issues found in 33 source files
 
 pytest
-111 passed, 1 warning in 7.04s
-Coverage: 97.26% (fail-under=90)
+123 passed, 1 warning in 7.93s
+Coverage: 96.83% (fail-under=90)
 
 Note: remaining warning is a Starlette/TestClient deprecation notice from the test
 client dependency. It does not affect the API or test results.
+
+Live evidence verification - 23 November 2026
+
+5/5 required queries returned HTTP 200.
+Counts: [5, 11, 14, 10, 10]
+Total prospects: 50
+Total social links: 52
+Platforms: Email, Google, Instagram, LinkedIn, Threads, WhatsApp, X
+Key-pattern scan: clean
+Generic search/video/post-link scan: clean
+Exact response/prospect/link key shapes: clean
